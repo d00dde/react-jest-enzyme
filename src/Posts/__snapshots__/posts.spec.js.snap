@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Posts component should render Post component 1`] = `
+<Posts>
+  <ul
+    className="newsList"
+  >
+    <Post
+      author="Yauhen"
+      created_at="2020-05-03T23:36:09.816Z"
+      key="1"
+      num_comments={10}
+      points={100}
+      title="Jest & Enzyme"
+      url="//test.url"
+    >
+      <li
+        className="post"
+      >
+        <div
+          className="description"
+        >
+          <a
+            className="title"
+            href="//test.url"
+          >
+            Jest & Enzyme
+          </a>
+          <span
+            className="text"
+          >
+            100 points
+          </span>
+          <span
+            className="comments"
+          >
+            10 comments
+          </span>
+          <span
+            className="date"
+          >
+            2020-5-4
+          </span>
+          <span
+            className="author"
+          >
+            Yauhen
+          </span>
+        </div>
+      </li>
+    </Post>
+    <Post
+      author="Stepan"
+      created_at="2020-05-05T23:36:09.816Z"
+      key="2"
+      num_comments={8}
+      points={10}
+      title="TypeScript Basics"
+      url="//test2121.url"
+    >
+      <li
+        className="post"
+      >
+        <div
+          className="description"
+        >
+          <a
+            className="title"
+            href="//test2121.url"
+          >
+            TypeScript Basics
+          </a>
+          <span
+            className="text"
+          >
+            10 points
+          </span>
+          <span
+            className="comments"
+          >
+            8 comments
+          </span>
+          <span
+            className="date"
+          >
+            2020-5-6
+          </span>
+          <span
+            className="author"
+          >
+            Stepan
+          </span>
+        </div>
+      </li>
+    </Post>
+  </ul>
+</Posts>
+`;
