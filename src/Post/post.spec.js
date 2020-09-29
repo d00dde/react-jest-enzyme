@@ -1,12 +1,12 @@
 import React from "react";
 import Post from "./post";
 
-const setUp = (props) => shallow(<Post {...props} />);
+const shallowPost = (props) => shallow(<Post {...props} />);
 
 describe("should render Post component", () => {
   let component;
   beforeEach(() => {
-    component = setUp();
+    component = shallowPost();
   });
 
   it("should contain .post wrapper", () => {
@@ -21,7 +21,7 @@ describe("should render Post component", () => {
 
   it("should render created date", () => {
     const created_at = "01-03-2020";
-    component = setUp({ created_at });
+    component = shallowPost({ created_at });
     const date = component.find(".date");
     expect(date.text()).toBe(new Date(created_at).toLocaleDateString());
   });
