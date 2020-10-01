@@ -62,8 +62,14 @@ describe("Описание группы тестов", () => {
     instance.handleHitsChange(args); // вызов метода handleHitsChange у созданного компонента
     instance.setState(state); // вызов метода setState компонента
 
-    expect(wrapper.length).toBe(1); // сравнивает на эквивалентность
+    expect(wrapper.length).toBe(1); // сравнивает на эквивалентность примитивы
+    expect({}).toEqual({}); // сравнивает на эквивалентность объекты
     expect(wrapper).toHaveLength(1); // проверяет длину коллекции
     expect(component).toMatchSnapshot(); // создаёт Snapshot компонента.
+
+    const mockHandler = jest.fn(); // создаёт моковую "функцию-шпион"
+    expect(mockHandler.mock.calls.length).toBe(1); // проверяет, сколько раз была вызвана моковая функция
+    expect(mockHandler.toHaveBeenCalledTimes(1)); // проверяет, сколько раз была вызвана моковая функция
+    expect(mockHandler.toHaveBeenCalled()); // проверяет, была ли вообще вызвана моковая функция
   });
 });
