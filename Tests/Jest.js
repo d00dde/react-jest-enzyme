@@ -43,6 +43,12 @@ console.error = (message) => {
 import React from 'react';
 import { Component } from './Component'; // тестируемый компонент
 
+
+
+const componentDidMountSpy = jest.spyOn(Component.prototype, "componentDidMount"); // так можно добавить обёртку к методу класса (в т.ч. и к методам lifecycle)
+
+
+
 const renderComponent = (props) => {
   return shallow(<Component {...props} />); // разметка только корневого компонента. Самый быстрый.
   return mount(<Component {...props} />); // монтирование в DOM корневого и дочерних компонентов. Самый долгий.
@@ -50,17 +56,26 @@ const renderComponent = (props) => {
 }
 describe("Описание группы тестов", () => {
   let component, instance;
-	beforeEach(() => { // выполнится перед каждым тестом
+  beforeEach(() => { // выполнится перед каждым тестом
+    jest.spyOn(window, "addEventListener"); // добавляет к функции "обёртку-шпион". У такой функции появляются методы jest
     component = renderComponent();
     instance = component.instance();
    });
+   afterEach(() => { // выполнится после каждого теста
+    window.addEventListener.mockRestore(); // очищает информацию jest-обертки перед очередным тестом
+  });
   it("Описание теста", () => {
     const wrapper = component.find(".post"); // находит у компонента дочерние элементы по CSS селектору
     const state = component.state(); // возвращает текущий state компонента
+    component.unmount(); // размонтирует компонент
+    component.setProps(); // позволяет вызвать компонент с новыми props
     const result = Component.defaultProps.handleChange(); // можно напрямую получить доступ к defaultProps и другим свойствам Component
+
 
     instance.handleHitsChange(args); // вызов метода handleHitsChange у созданного компонента
     instance.setState(state); // вызов метода setState компонента
+    instance.handleChangeTitle = jest.fn(); // инстансу можно подменить метод моковой функцией на время теста
+    instance.componentDidUpdate(); // у инстанса можно напрямую вызвать методы lifecycle
 
     expect(wrapper.length).toBe(1); // сравнивает на эквивалентность примитивы
     expect({}).toEqual({}); // сравнивает на эквивалентность объекты
@@ -71,5 +86,7 @@ describe("Описание группы тестов", () => {
     expect(mockHandler.mock.calls.length).toBe(1); // проверяет, сколько раз была вызвана моковая функция
     expect(mockHandler.toHaveBeenCalledTimes(1)); // проверяет, сколько раз была вызвана моковая функция
     expect(mockHandler.toHaveBeenCalled()); // проверяет, была ли вообще вызвана моковая функция
+
+    window.dispatchEvent(new Event("resize")); // способ иммитации события, не связаного с компонентом
   });
 });

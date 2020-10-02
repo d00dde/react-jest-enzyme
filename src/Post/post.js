@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import "/.post.css";
+
 const Post = ({ author, created_at, num_comments, title, points, url }) => (
   <li className="post">
     <div className="description">
