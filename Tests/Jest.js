@@ -40,12 +40,13 @@ console.error = (message) => {
 
 
 // ИСПОЛЬЗОВАНИЕ JEST
+
 import React from 'react';
 import { Component } from './Component'; // тестируемый компонент
 
-
-
 const componentDidMountSpy = jest.spyOn(Component.prototype, "componentDidMount"); // так можно добавить обёртку к методу класса (в т.ч. и к методам lifecycle)
+global.fetch = jest.fn().mockImplementation(() => mockFetchPromise); // подменяет реализацию нативной (любой) функции
+jest.fn().mockReturnValue("1"); // возвращает функцию, которая при вызове вернёт 1.
 
 
 
@@ -62,7 +63,8 @@ describe("Описание группы тестов", () => {
     instance = component.instance();
    });
    afterEach(() => { // выполнится после каждого теста
-    window.addEventListener.mockRestore(); // очищает информацию jest-обертки перед очередным тестом
+    window.addEventListener.mockRestore(); // удаляет jest-обертку перед очередным тестом
+    window.addEventListener.mockClear(); // очищает данные о предидущих вызовах jest-обертки (можно в конфиге указать "clearMocks": true)
   });
   it("Описание теста", () => {
     const wrapper = component.find(".post"); // находит у компонента дочерние элементы по CSS селектору
@@ -78,7 +80,12 @@ describe("Описание группы тестов", () => {
     instance.componentDidUpdate(); // у инстанса можно напрямую вызвать методы lifecycle
 
     expect(wrapper.length).toBe(1); // сравнивает на эквивалентность примитивы
-    expect({}).toEqual({}); // сравнивает на эквивалентность объекты
+    expect({}).toEqual({}); // сравнивает на эквивалентность сложные структуры данных
+    expect(removeObjPropImmutably()).toMatchObject({}); // сравнивает на эквивалентность объекты
+    expect(trimString()).toBeNull(); // проверяет значение на равенство null
+    expect(trimString()).toBeUndefined(); // проверяет значение на равенство undefined
+    expect(getIsValidNumber()).toBeTruthy(); // проверяет значение на истинность
+    expect(getIsValidNumber()).toBeFalsy(); // проверяет значение на ложность
     expect(wrapper).toHaveLength(1); // проверяет длину коллекции
     expect(component).toMatchSnapshot(); // создаёт Snapshot компонента.
 
