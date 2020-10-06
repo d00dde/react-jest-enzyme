@@ -1,44 +1,3 @@
-// ПОДГОТОВКА К ТЕСТИРОВАНИЮ С ПОМОЩЬЮ enzyme (ЧЕРЕЗ src/config/setupTest.js)
-
-// в pacage.json настраиваем jest
-"jest": {
-  "verbose": true,
-  "clearMocks": true,
-  "collectCoverage": true,
-  "setupFilesAfterEnv": [
-    "./config/setupTest.js"
-  ],
-  "snapshotSerializers": [
-    "./node_modules/enzyme-to-json/serializer"
-  ],
-  "transform": {
-    "^.+\\.js$": "babel-jest"
-  },
-  "moduleNameMapper": {
-    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "./__mocks__/fileMock.js",
-    "\\.(css|scss)$": "identity-obj-proxy"
-  }
-}
-// в setupTest.js импортируем нужные утилиты из enzyme
-
-import Enzyme, { shallow, render, mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import toJson from "enzyme-to-json";
-
-// React 16 Enzyme adapter
-Enzyme.configure({ adapter: new Adapter() });
-
-global.shallow = shallow;
-global.render = render;
-global.mount = mount;
-global.toJson = toJson;
-
-// Fail tests on any warning
-console.error = (message) => {
-  throw new Error(message);
-};
-
-
 // ИСПОЛЬЗОВАНИЕ JEST
 
 import React from 'react';
@@ -97,3 +56,108 @@ describe("Описание группы тестов", () => {
     window.dispatchEvent(new Event("resize")); // способ иммитации события, не связаного с компонентом
   });
 });
+
+// ПОДГОТОВКА К ТЕСТИРОВАНИЮ С ПОМОЩЬЮ enzyme
+
+// в pacage.json
+"devDependencies": {
+  "@babel/cli": "^7.8.4",
+  "@babel/core": "^7.9.6",
+  "@babel/plugin-proposal-class-properties": "^7.8.3",
+  "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+  "@babel/preset-env": "^7.9.6",
+  "@babel/preset-flow": "^7.9.0",
+  "@babel/preset-react": "^7.9.4",
+  "babel-core": "^6.26.3",
+  "babel-eslint": "^10.1.0",
+  "babel-jest": "^26.0.1",
+  "babel-loader": "^8.1.0",
+  "enzyme": "^3.11.0",
+  "enzyme-adapter-react-16": "^1.15.2",
+  "enzyme-to-json": "^3.5.0",
+  "identity-obj-proxy": "^3.0.0",
+  "jest": "^26.0.1"
+}
+
+"jest": {
+  "verbose": true,
+  "clearMocks": true,
+  "collectCoverage": true,
+  "setupFilesAfterEnv": [
+    "./config/setupTest.js"
+  ],
+  "snapshotSerializers": [
+    "./node_modules/enzyme-to-json/serializer"
+  ],
+  "transform": {
+    "^.+\\.js$": "babel-jest"
+  },
+  "moduleNameMapper": {
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "./__mocks__/fileMock.js",
+    "\\.(css|scss)$": "identity-obj-proxy"
+  }
+}
+
+// в setupTest.js импортируем нужные утилиты из enzyme
+
+import Enzyme, { shallow, render, mount } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import toJson from "enzyme-to-json";
+
+// React 16 Enzyme adapter
+Enzyme.configure({ adapter: new Adapter() });
+
+global.shallow = shallow;
+global.render = render;
+global.mount = mount;
+global.toJson = toJson;
+
+// Fail tests on any warning
+console.error = (message) => {
+  throw new Error(message);
+};
+// В babel.config.js настраиваем babel
+
+module.exports = {
+  env: {
+    test: {
+      presets: [
+        [
+          "@babel/preset-env",
+          {
+            modules: "commonjs",
+            debug: false,
+          },
+        ],
+        "@babel/preset-flow",
+        "@babel/preset-react",
+      ],
+      plugins: [
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-proposal-class-properties",
+      ],
+    },
+    production: {
+      presets: [
+        ["@babel/preset-env", { modules: false }],
+        "@babel/preset-flow",
+        "@babel/preset-react",
+      ],
+      plugins: [
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-proposal-class-properties",
+      ],
+    },
+    development: {
+      presets: [
+        ["@babel/preset-env", { modules: false }],
+        "@babel/preset-flow",
+        "@babel/preset-react",
+      ],
+      plugins: [
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-proposal-class-properties",
+      ],
+    },
+  },
+};
